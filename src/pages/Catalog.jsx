@@ -22,8 +22,12 @@ const Catalog = () => {
 
   const categories = ['Todas', ...new Set(products.map(p => p.category))];
 
+  const normalizeText = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
   const filteredProducts = products.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const normalizedProductName = normalizeText(p.name);
+    const normalizedSearch = normalizeText(searchTerm);
+    const matchSearch = normalizedProductName.includes(normalizedSearch);
     const matchCategory = category === 'Todas' || p.category === category;
     return matchSearch && matchCategory;
   });
