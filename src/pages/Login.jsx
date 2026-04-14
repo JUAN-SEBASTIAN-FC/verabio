@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { Activity, LogIn, ChevronRight, Mail, Lock, User } from 'lucide-react';
+import { Activity, LogIn, ChevronRight, Mail, Lock, User, Sun, Moon } from 'lucide-react';
 
 const ParticleBackground = () => {
   const canvasRef = useRef(null);
@@ -157,6 +158,7 @@ const ParticleBackground = () => {
 
 const Login = () => {
   const { login } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -181,6 +183,16 @@ const Login = () => {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '2rem' }}>
       
+      {/* Botón Flotante para Alternar Tema */}
+      <button 
+        onClick={toggleTheme}
+        className="btn interactive"
+        style={{ position: 'absolute', top: '2rem', right: '2rem', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'var(--bg-card)', border: '1px solid var(--border-glass)', color: 'var(--text-main)', padding: 0 }}
+        title="Cambiar Modo de Visualización"
+      >
+        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
+
       {/* Fondo Premium Antigravedad Reactivo */}
       <ParticleBackground />
 
@@ -195,10 +207,10 @@ const Login = () => {
             animation: 'pageEnter var(--transit-slow)', 
             display: 'flex', 
             flexDirection: 'column', 
-            background: 'rgba(17, 24, 39, 0.25)', /* Opacidad baja para ver partículas */
-            backdropFilter: 'blur(20px)', /* Fuerte blur para conservar lectura */
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+            background: 'var(--glass-bg)', 
+            backdropFilter: 'blur(20px)', 
+            border: '1px solid var(--border-glass)',
+            boxShadow: 'var(--shadow-float)',
             transform: 'translateY(0)',
             transition: 'transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease',
           }}
@@ -225,7 +237,7 @@ const Login = () => {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             
             {error && (
-              <div style={{ padding: '0.8rem 1rem', background: 'rgba(239, 68, 68, 0.15)', color: '#FCA5A5', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', animation: 'pageEnter 0.2s', textAlign: 'center' }}>
+              <div style={{ padding: '0.8rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', animation: 'pageEnter 0.2s', textAlign: 'center' }}>
                 {error}
               </div>
             )}
@@ -255,7 +267,7 @@ const Login = () => {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Contraseña"
-                  style={{ paddingLeft: '2.75rem', fontSize: '0.95rem', background: 'rgba(255, 255, 255, 0.05)' }}
+                  style={{ paddingLeft: '2.75rem', fontSize: '0.95rem', background: 'var(--bg-card)' }}
                 />
               </div>
             </div>
@@ -275,25 +287,25 @@ const Login = () => {
 
         {/* PANEL DERECHO: CREDENCIALES (Compacto) */}
         <div style={{ flex: '0 1 280px', display: 'flex', flexDirection: 'column', animation: 'pageEnter var(--transit-slow)', animationDelay: '0.2s', animationFillMode: 'both' }}>
-           <div style={{ padding: '1.5rem', background: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(12px)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+           <div style={{ padding: '1.5rem', background: 'var(--glass-bg-secondary)', backdropFilter: 'blur(12px)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-glass)' }}>
               <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 <User size={16} /> Credenciales
               </h3>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div onClick={() => { setEmail('jane@clinic.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='rgba(255,255,255,0.08)'} onMouseOut={e=>e.currentTarget.style.background='rgba(255,255,255,0.03)'}>
+                <div onClick={() => { setEmail('jane@clinic.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'var(--bg-main)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='var(--primary-glow)'} onMouseOut={e=>e.currentTarget.style.background='var(--bg-main)'}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--primary)', fontWeight: 600, marginBottom: '0.15rem' }}>ESPECIALISTA</div>
-                  <div className="num-data" style={{ fontSize: '0.85rem', color: '#fff' }}>jane@clinic.com</div>
+                  <div className="num-data" style={{ fontSize: '0.85rem', color: 'var(--text-main)' }}>jane@clinic.com</div>
                 </div>
 
-                <div onClick={() => { setEmail('sales@medtech.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='rgba(255,255,255,0.08)'} onMouseOut={e=>e.currentTarget.style.background='rgba(255,255,255,0.03)'}>
+                <div onClick={() => { setEmail('sales@medtech.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'var(--bg-main)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='var(--primary-glow)'} onMouseOut={e=>e.currentTarget.style.background='var(--bg-main)'}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--secondary)', fontWeight: 600, marginBottom: '0.15rem' }}>PROVEEDOR</div>
-                  <div className="num-data" style={{ fontSize: '0.85rem', color: '#fff' }}>sales@medtech.com</div>
+                  <div className="num-data" style={{ fontSize: '0.85rem', color: 'var(--text-main)' }}>sales@medtech.com</div>
                 </div>
 
-                <div onClick={() => { setEmail('admin@verabio.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='rgba(255,255,255,0.08)'} onMouseOut={e=>e.currentTarget.style.background='rgba(255,255,255,0.03)'}>
+                <div onClick={() => { setEmail('admin@verabio.com'); setPassword('password123'); }} style={{ cursor: 'pointer', padding: '0.75rem', background: 'var(--bg-main)', borderRadius: 'var(--radius-md)', transition: 'background 0.2s' }} onMouseOver={e=>e.currentTarget.style.background='var(--primary-glow)'} onMouseOut={e=>e.currentTarget.style.background='var(--bg-main)'}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--warning)', fontWeight: 600, marginBottom: '0.15rem' }}>ADMINISTRADOR</div>
-                  <div className="num-data" style={{ fontSize: '0.85rem', color: '#fff' }}>admin@verabio.com</div>
+                  <div className="num-data" style={{ fontSize: '0.85rem', color: 'var(--text-main)' }}>admin@verabio.com</div>
                 </div>
               </div>
            </div>
