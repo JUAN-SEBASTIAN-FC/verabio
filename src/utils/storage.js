@@ -63,8 +63,9 @@ const initialProducts = [
     status: 'active',
     imageUrl: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=600',
     reviews: []
-  }
-];
+  },
+  
+]; 
 
 export const initStorage = () => {
   if (!localStorage.getItem(USERS_KEY)) {
